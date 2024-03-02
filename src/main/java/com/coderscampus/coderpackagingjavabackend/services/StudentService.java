@@ -1,12 +1,24 @@
 package com.coderscampus.coderpackagingjavabackend.services;
 
 import com.coderscampus.coderpackagingjavabackend.domain.Student;
+import com.coderscampus.coderpackagingjavabackend.repository.StudentRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class StudentService {
+    private final ObjectMapper objectMapper;
+    private final StudentRepository studentRepository;
+
+    public StudentService(ObjectMapper objectMapper,
+                          StudentRepository studentRepository) {
+        this.objectMapper = objectMapper;
+        this.studentRepository = studentRepository;
+    }
+
     public Student getOneStudentById(Long studentId){
         return null;
     }
@@ -16,5 +28,14 @@ public class StudentService {
         //  2. Go further and create a FeaturedStudents DTO that only returns what is needed
         //  (i.e. student id, image, email, linkedin, data collected, etc)
         return null;
+    }
+
+    public Student createStudent(Student createStudentRequest)  {
+        Student newStudent = new Student();
+        newStudent.setFirstName(createStudentRequest.getFirstName());
+        newStudent.setLastName(createStudentRequest.getLastName());
+        newStudent.setEmail(createStudentRequest.getEmail());
+        studentRepository.save(newStudent);
+        return newStudent;
     }
 }

@@ -71,4 +71,5 @@ public class Student {
     public void setStudentImage(byte[] studentImage) {
         this.studentImage = studentImage;
     }
+
 }
