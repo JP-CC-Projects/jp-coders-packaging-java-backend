@@ -91,4 +91,5 @@ public class CheckIn {
             setTimeInClassInSeconds(BigInteger.ZERO);
         }
     }
+
 }

@@ -1,9 +1,10 @@
 package com.coderscampus.coderpackagingjavabackend.services;
 
+import com.coderscampus.coderpackagingjavabackend.domain.CheckIn;
 import com.coderscampus.coderpackagingjavabackend.domain.Student;
 import com.coderscampus.coderpackagingjavabackend.repository.StudentRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,9 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student getOneStudentById(Long studentId){
-        return null;
+    public Student getOneStudentById(Long studentId) {
+        return studentRepository.findById(studentId).orElseThrow(() -> new EntityNotFoundException(
+                "Student not found with id: " + studentId));
     }
 
     public List<Student> getFeaturedStudents() {
@@ -30,12 +32,21 @@ public class StudentService {
         return null;
     }
 
-    public Student createStudent(Student createStudentRequest)  {
+    public Student createStudent(Student createStudentRequest) {
         Student newStudent = new Student();
         newStudent.setFirstName(createStudentRequest.getFirstName());
         newStudent.setLastName(createStudentRequest.getLastName());
         newStudent.setEmail(createStudentRequest.getEmail());
         studentRepository.save(newStudent);
         return newStudent;
+    }
+
+    public Student updateStudentPhoto(Long studentId, byte[] photoData) {
+        Student existingStudent = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Check-in not found for student with id: " + studentId));
+        existingStudent.setStudentImage(photoData);
+        studentRepository.save(existingStudent);
+        return existingStudent;
     }
 }

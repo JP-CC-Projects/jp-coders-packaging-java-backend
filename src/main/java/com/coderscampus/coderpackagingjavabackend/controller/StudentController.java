@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @ComponentScan
@@ -23,6 +26,7 @@ public class StudentController {
     public ResponseEntity<Student> getOneStudentById(
             @RequestParam Long studentId) {
         Student requestedStudent = studentService.getOneStudentById(studentId);
+        System.out.println("Returning get-one-student: " + requestedStudent);
         return ResponseEntity.ok(requestedStudent);
     }
     @GetMapping("/get-featured-students")
@@ -40,6 +44,14 @@ public class StudentController {
         System.out.println("Create student request lastName: " + createStudentRequest.getLastName());
         Student newStudent = studentService.createStudent(createStudentRequest);
         return ResponseEntity.ok(newStudent);
+    }
+    @PostMapping("/update-student-photo")
+    public ResponseEntity<Student> updatePhoto(
+            @RequestParam("studentId") Long studentId,
+            @RequestParam("studentImage") MultipartFile studentImage) throws IOException {
+        System.out.println("Create student request id: " + studentId);
+        Student updatedStudent = studentService.updateStudentPhoto(studentId, studentImage.getBytes());
+        return ResponseEntity.ok(updatedStudent);
     }
 
 //    @PostMapping("/update-student")

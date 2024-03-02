@@ -1,5 +1,6 @@
 package com.coderscampus.coderpackagingjavabackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,13 +13,15 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @OneToMany(mappedBy = "student")
+    @JsonIgnore
+    private List<CheckIn> checkIns = new ArrayList<CheckIn>();
     private String firstName;
     private String lastName;
     private String email;
-    @OneToMany(mappedBy = "student")
-    private List<CheckIn> checkIns = new ArrayList<CheckIn>();
+
     @Lob
-    @Column(name = "student_image", columnDefinition="BLOB")
+    @Column(name = "student_image", columnDefinition="MEDIUMBLOB")
     private byte[] studentImage;
 
     public Student() {
